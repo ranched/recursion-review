@@ -15,9 +15,23 @@ var stringifyJSON = function(obj) {
     }, [] );
     return '[' + itemString.join() + ']';
   }
-  if(Object.prototype.toString.call(obj) === '[object Object]'){
-    var 
-      
+  if(typeof obj === 'function'){
+   return ;
+  }
+  if (Object.prototype.toString.call(obj) === '[object Object]') {
+    var keys = Object.keys(obj);
+    var length = keys.length;
+    var objStr = '{';
+    for (var key in obj) {
+      if(typeof obj[key] !== 'function' && obj[key] !== undefined){
+        var value = stringifyJSON(obj[key]);
+        objStr += stringifyJSON(key) + ':' + value;
+        if(key !== keys[length - 1]){
+          objStr += ',';
+        }
+      }
+    }
+    return objStr + '}';
   }
   return '' + obj;
 
